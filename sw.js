@@ -1,60 +1,64 @@
-const CACHE_NAME = 'matrixland-v1.0.0';
-const BASE_PATH = '/matrixland';
+const CACHE_NAME = 'matrixland-v1';
 const urlsToCache = [
-  `${BASE_PATH}/`,
-  `${BASE_PATH}/index.html`,
-  `${BASE_PATH}/manifest.json`,
-  `${BASE_PATH}/icons/icon-192x192.png`,
-  `${BASE_PATH}/icons/icon-512x512.png`
+  '/',
+  '/index.html',
+  '/manifest.json',
+  '/icons/icon-192x192.png',
+  '/icons/icon-512x512.png'
 ];
 
-// Instalación
+// Instalación del Service Worker
 self.addEventListener('install', event => {
-  console.log('[SW] Instalando...');
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        console.log('[SW] Cacheando archivos');
+        console.log('Cache abierto');
         return cache.addAll(urlsToCache);
       })
-      .catch(err => console.error('[SW] Error:', err))
   );
-  self.skipWaiting();
 });
 
-// Activación
+// Activación del Service Worker
 self.addEventListener('activate', event => {
-  console.log('[SW] Activando...');
   event.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(
         cacheNames.map(cacheName => {
           if (cacheName !== CACHE_NAME) {
-            console.log('[SW] Eliminando cache antiguo:', cacheName);
+            console.log('Eliminando cache antiguo:', cacheName);
             return caches.delete(cacheName);
           }
         })
       );
     })
   );
-  return self.clients.claim();
 });
 
-// Fetch
+// Estrategia: Network First, luego Cache
 self.addEventListener('fetch', event => {
   event.respondWith(
     fetch(event.request)
       .then(response => {
-        if (response && response.status === 200 && response.type === 'basic') {
+        // Si la respuesta es válida, clonarla y guardarla en cache
+        if (response && response.status === 200) {
           const responseToCache = response.clone();
           caches.open(CACHE_NAME)
-            .then(cache => cache.put(event.request, responseToCache));
+            .then(cache => {
+              cache.put(event.request, responseToCache);
+            });
         }
         return response;
       })
       .catch(() => {
+        // Si falla la red, buscar en cache
         return caches.match(event.request)
-          .then(response => response || caches.match(`${BASE_PATH}/index.html`));
+          .then(response => {
+            if (response) {
+              return response;
+            }
+            // Si no está en cache, devolver página offline
+            return caches.match('/index.html');
+          });
       })
   );
 });
