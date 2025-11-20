@@ -22,3 +22,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Build
+build
+
+# Environment
+.env
+.env.local
+.env.productionRUN

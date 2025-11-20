@@ -22,13 +22,14 @@ body {
   min-height: 100vh;
 }
 
-/* Ocultar flechas de input number */
+/* Ocultar flechas de input number en Chrome, Safari, Edge */
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
+/* Ocultar flechas de input number en Firefox */
 input[type=number] {
   -moz-appearance: textfield;
 }
