@@ -274,29 +274,24 @@ const MatrixLand = () => {
                   onClick={() => startGame('libre', 'basico')}
                   className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-bold py-3 px-6 rounded-lg transition-all transform hover:scale-105"
                 >
-                  🎯 Práctica Básica
+                   Práctica Básica
                 </button>
                 <button
                   onClick={() => startGame('libre', 'intermedio')}
                   className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-bold py-3 px-6 rounded-lg transition-all transform hover:scale-105"
                 >
-                  🎯 Práctica Intermedia
+                   Práctica Intermedia
                 </button>
                 <button
                   onClick={() => startGame('libre', 'avanzado')}
                   className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-bold py-3 px-6 rounded-lg transition-all transform hover:scale-105"
                 >
-                  🎯 Práctica Avanzada
+                   Práctica Avanzada
                 </button>
               </div>
             </div>
           </div>
 
-          <div className="mt-8 text-center">
-            <p className="text-cyan-200 text-sm">
-              💡 Tip: Comienza con el nivel básico para aprender las mecánicas del juego
-            </p>
-          </div>
         </div>
       </div>
     );
